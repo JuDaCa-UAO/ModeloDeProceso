@@ -1,0 +1,58 @@
+.stage {
+  min-height: 100dvh;
+  background: radial-gradient(1200px 600px at 50% 30%, rgba(120,255,240,0.10), transparent 60%),
+              linear-gradient(180deg, #070812, #050513);
+  color: rgba(255, 255, 255, 0.92);
+  display: flex;
+  flex-direction: column;
+}
+
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 22px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  background: rgba(0,0,0,0.25);
+  backdrop-filter: blur(10px);
+}
+
+.back {
+  color: rgba(165, 243, 252, 0.95);
+  text-decoration: none;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  letter-spacing: 0.08em;
+}
+
+.title {
+  font-size: 13px;
+  color: rgba(255,255,255,0.75);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.center {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  padding: 28px 20px;
+  gap: 14px;
+}
+
+.viewer {
+  width: min(980px, 100%);
+  height: min(70vh, 620px);
+  border-radius: 24px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.03);
+  box-shadow: 0 30px 120px rgba(0,0,0,0.55);
+  overflow: hidden;
+}
+
+.hint {
+  margin: 0;
+  font-size: 12px;
+  color: rgba(255,255,255,0.60);
+  letter-spacing: 0.06em;
+}
