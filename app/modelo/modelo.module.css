@@ -56,3 +56,73 @@
   color: rgba(255,255,255,0.60);
   letter-spacing: 0.06em;
 }
+.videoWrap {
+  width: min(980px, 100%);
+  display: grid;
+  gap: 14px;
+  justify-items: center;
+}
+
+.video {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 24px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(0,0,0,0.35);
+  box-shadow: 0 30px 120px rgba(0,0,0,0.55);
+}
+
+.skipBtn {
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.86);
+  border-radius: 14px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  letter-spacing: 0.08em;
+  font-size: 12px;
+}
+
+.skipBtn:hover {
+  transform: translateY(-1px);
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.20);
+}
+
+.continueBtn {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: min(420px, 100%);
+  border-radius: 18px;
+  border: 1px solid rgba(120, 255, 240, 0.35);
+  padding: 16px 18px;
+  background: linear-gradient(90deg, rgba(34, 211, 238, 0.12), rgba(99, 102, 241, 0.12));
+  color: rgba(207, 250, 254, 0.95);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  letter-spacing: 0.22em;
+  font-size: 14px;
+}
+
+.continueBtn:hover {
+  transform: translateY(-1px);
+  border-color: rgba(120, 255, 240, 0.5);
+  box-shadow: 0 22px 80px rgba(0, 0, 0, 0.55);
+}
+/* Animación de salida del recuadro del video hacia la derecha */
+.videoExitRight {
+  /* ✅ usa la variable --exit-ms */
+  transition: transform var(--exit-ms, 320ms) ease-in, opacity var(--exit-ms, 320ms) ease-in;
+  transform: translateX(120vw);
+  opacity: 0;
+  pointer-events: none;
+}
+

@@ -43,7 +43,6 @@ export default function InicioPage() {
                   className={styles.avatarImg}
                 />
               </div>
-              <div className={styles.avatarTag}>Placeholder personaje (Laia)</div>
             </div>
 
             {/* ✅ TODOS los botones en el mismo bloque/estilo */}
@@ -51,9 +50,9 @@ export default function InicioPage() {
           </div>
 
           <footer className={styles.footer}>
-            <span className={styles.tipBadge}>Tip</span>
+            <span className={styles.tipBadge}>Laia</span>
             <span>
-              “Iniciar” te lleva al modelo 3D. “Continuar” aparece si ya avanzaste.
+              Yo seré la asistente especializada que se encargará de guiarte a través de esta aventura tecnológica de aprendizaje sobre IA.
             </span>
           </footer>
         </section>
