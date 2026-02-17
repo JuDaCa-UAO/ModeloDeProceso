@@ -1,10 +1,52 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { writeProgress } from "../../lib/progress";
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Environment, Float, Center } from "@react-three/drei";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { Center, OrbitControls } from "@react-three/drei";
 import Model from "./Model";
+
+const initialDistance = 35;
+
+function RotatingSpiral() {
+  const spinRef = useRef<any>(null);
+
+  useFrame((_, delta) => {
+    if (!spinRef.current) return;
+    spinRef.current.rotation.y += delta * 0.55;
+  });
+
+  return (
+    <group ref={spinRef}>
+      <Center>
+        <Model url="/models/espiral.glb" />
+      </Center>
+    </group>
+  );
+}
+
+function LockedOrbitControls() {
+  const controlsRef = useRef<any>(null);
+
+  useFrame(() => {
+    if (!controlsRef.current) return;
+    controlsRef.current.target.set(0, 0, 0);
+    controlsRef.current.update();
+  });
+
+  return (
+    <OrbitControls
+      ref={controlsRef}
+      makeDefault
+      enablePan={false}
+      enableZoom
+      enableRotate
+      target={[0, 0, 0]}
+      minDistance={20}
+      maxDistance={50}
+    />
+  );
+}
 
 export default function Scene3D() {
   useEffect(() => {
@@ -12,19 +54,18 @@ export default function Scene3D() {
   }, []);
 
   return (
-    <Canvas camera={{ position: [0, 0, 6], fov: 45 }}>
-      <ambientLight intensity={0.7} />
-      <directionalLight position={[3, 3, 3]} intensity={1.2} />
-      <Environment preset="city" />
+    <Canvas flat camera={{ position: [0, 0, initialDistance], fov: 42 }}>
+      <ambientLight intensity={1.05} color="#ffffff" />
+      <directionalLight position={[4, 5, 3]} intensity={0.55} color="#ffffff" />
+      <directionalLight
+        position={[-3, -2, -4]}
+        intensity={0.25}
+        color="#ffffff"
+      />
 
-      {/* Center ayuda a centrar el modelo automáticamente */}
-      <Center>
-        <Float speed={1.0} rotationIntensity={0.4} floatIntensity={0.25}>
-          <Model url="/models/espiral.glb" scale={100.0} />
-        </Float>
-      </Center>
+      <LockedOrbitControls />
 
-      <OrbitControls enablePan enableZoom enableRotate />
+      <RotatingSpiral />
     </Canvas>
   );
 }
