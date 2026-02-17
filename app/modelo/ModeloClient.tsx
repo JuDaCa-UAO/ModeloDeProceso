@@ -52,7 +52,7 @@ export default function ModeloClient() {
     () => [
       {
         text: "Esta es la espiral que iremos recorriendo juntos.",
-        imgSrc: "/ui/Laia_explaining_holo.png",
+        imgSrc: "/ui/Laia_explaining.png",
         imgAlt: "Laia - modelo desbloqueado paso 1",
       },
       {
