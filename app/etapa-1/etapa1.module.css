@@ -9,9 +9,26 @@
   color: rgba(255, 255, 255, 0.92);
   display: grid;
   place-items: center;
-  padding: 28px 20px;
+  padding: clamp(14px, 2.8vh, 28px) clamp(12px, 2.4vw, 20px);
 }
 
 .dialog {
   width: min(1100px, 100%);
+  max-width: 100%;
+}
+
+@media (max-width: 760px) {
+  .stage {
+    padding: 12px;
+  }
+
+  .dialog {
+    width: 100%;
+  }
+}
+
+@media (max-height: 760px) {
+  .stage {
+    padding: 10px 12px;
+  }
 }

@@ -13,6 +13,7 @@ export default function InicioPage() {
             alt="Fondo"
             fill
             priority
+            unoptimized
             className={styles.bgImage}
           />
         </div>
@@ -40,6 +41,7 @@ export default function InicioPage() {
                   src="/ui/laia.png"
                   alt="Personaje (Laia)"
                   fill
+                  unoptimized
                   className={styles.avatarImg}
                 />
               </div>
