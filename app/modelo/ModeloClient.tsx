@@ -7,12 +7,12 @@ import CharacterStepDialog, {
   CharacterDialogStep,
 } from "@/components/character-step-dialog/CharacterStepDialog";
 import MatrixRainBackground from "@/components/matrix-rain/MatrixRainBackground";
+import { SHARED_MATRIX_RAIN_PRESET } from "@/components/matrix-rain/matrixRainPresets";
 import styles from "./modelo.module.css";
 import Scene3D from "./scene3d";
 import { writeProgress } from "../../lib/progress";
 
 const VIDEO_URL = "/videos/intro-modelo.mp4";
-const EXIT_MS = 290;
 type ModeloPhase = "video" | "dialog" | "model";
 
 export default function ModeloClient() {
@@ -20,8 +20,12 @@ export default function ModeloClient() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const [phase, setPhase] = useState<ModeloPhase>("video");
-  const [videoState, setVideoState] = useState<"show" | "exit">("show");
-  const [isPostDialogComplete, setIsPostDialogComplete] = useState(false);
+
+  // ✅ Nuevo: control de reproducción manual
+  const [hasStartedVideo, setHasStartedVideo] = useState(false);
+
+  // ✅ "Siguiente" solo al terminar (o al saltar)
+  const [videoEnded, setVideoEnded] = useState(false);
 
   const modelSteps = useMemo<CharacterDialogStep[]>(
     () => [
@@ -31,23 +35,24 @@ export default function ModeloClient() {
         imgAlt: "Laia - modelo paso 1",
       },
       {
-        text: "Este modelo de proceso guía la apropiación pedagógica de la IA generativa en la docencia a través de seis etapas conectadas en forma de espiral. ",
+        text: "Este modelo de proceso guía la apropiación pedagógica de la IA generativa en la docencia a través de seis etapas conectadas en forma de espiral.",
         imgSrc: "/ui/Laia_explaining.png",
         imgAlt: "Laia - modelo paso 2",
       },
       {
         text: "La espiral representa un recorrido progresivo e iterativo: se avanza etapa por etapa, se implementa en el aula, se evalúa lo que ocurrió y se mejora con base en evidencia.",
         imgSrc: "/ui/Laia_explaining.png",
-        imgAlt: "Laia - modelo paso 2",
+        imgAlt: "Laia - modelo paso 3",
       },
       {
-        text: "Así, cada nueva a vuelta a la espiral permite refinar decisiones, materiales y estrategias.",
+        text: "Así, cada nueva vuelta a la espiral permite refinar decisiones, materiales y estrategias.",
         imgSrc: "/ui/Laia_explaining_holo.png",
-        imgAlt: "Laia - modelo paso 2",
+        imgAlt: "Laia - modelo paso 4",
       },
     ],
     []
   );
+
   const postModelSteps = useMemo<CharacterDialogStep[]>(
     () => [
       {
@@ -56,7 +61,37 @@ export default function ModeloClient() {
         imgAlt: "Laia - modelo desbloqueado paso 1",
       },
       {
-        text: "Este proceso no es lineal, como te dije, es iterativo, asi que puedes comenzar a diseñar, crear, aprender y transmitir desde la etapa que desees.",
+        text: "En este punto seguro te preguntas ¿por qué una espiral?",
+        imgSrc: "/ui/Laia_explaining.png",
+        imgAlt: "Laia - modelo desbloqueado paso 2",
+      },
+      {
+        text: "Una espiral no representa una lista de pasos aislados. Representa un ciclo de mejora:", 
+        imgSrc: "/ui/Laia_explaining_holo.png",
+        imgAlt: "Laia - modelo desbloqueado paso 2",
+      },
+      {
+        text: "1. Se parte del contexto real y una necesidad concreta. ", 
+        imgSrc: "/ui/Laia_explaining.png",
+        imgAlt: "Laia - modelo desbloqueado paso 2",
+      },
+      {
+        text: "2. Se diseñan decisiones pedagógicas con propósito. ", 
+        imgSrc: "/ui/Laia_explaining_holo.png",
+        imgAlt: "Laia - modelo desbloqueado paso 2",
+      },
+      {
+        text: "3. Se implementa con acompañamiento y cuidado. ", 
+        imgSrc: "/ui/Laia_explaining_holo.png",
+        imgAlt: "Laia - modelo desbloqueado paso 2",
+      },
+      {
+        text: "4. Se evalúa el impacto y se ajusta. ", 
+        imgSrc: "/ui/Laia_explaining.png",
+        imgAlt: "Laia - modelo desbloqueado paso 2",
+      },
+      {
+        text: "El valor del modelo está en que permite avanzar con estructura, evitando improvisación, y fortaleciendo la práctica docente con cada iteración.", 
         imgSrc: "/ui/Laia_triumphant.png",
         imgAlt: "Laia - modelo desbloqueado paso 2",
       },
@@ -64,18 +99,52 @@ export default function ModeloClient() {
     []
   );
 
+  const [isPostDialogComplete, setIsPostDialogComplete] = useState(false);
+
   useEffect(() => {
     writeProgress({ hasStarted: true, lastRoute: "/modelo" });
+
+    // ✅ Asegura que arranque pausado y con audio disponible
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+      videoRef.current.muted = false;
+      videoRef.current.volume = 1;
+    }
   }, []);
 
-  function finishVideo() {
-    if (videoState === "exit") return;
+  async function playVideo() {
+    const v = videoRef.current;
+    if (!v) return;
 
-    setVideoState("exit");
+    try {
+      // ✅ reproducción tras interacción: audio permitido
+      v.muted = false;
+      v.volume = 1;
+      setHasStartedVideo(true);
+      await v.play();
+    } catch {
+      // Si fallara, normalmente es por políticas extrañas o codec.
+      // Pero al ser interacción directa, debería funcionar.
+    }
+  }
 
-    window.setTimeout(() => {
-      setPhase("dialog");
-    }, EXIT_MS);
+  function handleVideoEnded() {
+    setVideoEnded(true);
+  }
+
+  function skipVideo() {
+    const v = videoRef.current;
+    if (v) {
+      v.pause();
+      v.currentTime = 0;
+    }
+    setVideoEnded(true);
+    setHasStartedVideo(true);
+  }
+
+  function goNextFromVideo() {
+    setPhase("dialog");
   }
 
   function handleDialogComplete() {
@@ -96,9 +165,7 @@ export default function ModeloClient() {
     <div className={styles.stage}>
       <MatrixRainBackground
         className={styles.matrixBackground}
-        charSize={17}
-        baseSpeed={0.88}
-        glowRadius={180}
+        {...SHARED_MATRIX_RAIN_PRESET}
       />
 
       <header className={styles.topBar}>
@@ -110,35 +177,59 @@ export default function ModeloClient() {
 
       <main className={styles.center}>
         {phase === "video" ? (
-          <div
-            className={`${styles.videoWrap} ${
-              videoState === "exit" ? styles.videoExitRight : ""
-            }`}
-            style={{ ["--exit-ms" as any]: `${EXIT_MS}ms` }}
-          >
+          <div className={styles.videoFull}>
             <video
               ref={videoRef}
-              className={styles.video}
+              className={styles.videoFullMedia}
               src={VIDEO_URL}
-              controls
               playsInline
-              onEnded={finishVideo}
+              controls={false}   // ✅ sin controles
+              preload="auto"
+              onEnded={handleVideoEnded}
             />
 
-            <button
-              type="button"
-              className={styles.skipBtn}
-              onClick={finishVideo}
-              disabled={videoState === "exit"}
-            >
-              Saltar video
-            </button>
+            <div className={styles.videoActions}>
+              {/* ✅ Botón principal: Reproducir */}
+              {!hasStartedVideo ? (
+                <button type="button" className={styles.nextBtn} onClick={playVideo}>
+                  Reproducir <span className={styles.arrow}>▶</span>
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className={styles.nextBtn}
+                  onClick={goNextFromVideo}
+                  disabled={!videoEnded}
+                  aria-disabled={!videoEnded}
+                >
+                  Siguiente <span className={styles.arrow}>→</span>
+                </button>
+              )}
+
+              {/* Opcional: Saltar */}
+              <button
+                type="button"
+                className={styles.skipBtn}
+                onClick={skipVideo}
+                disabled={videoEnded}
+              >
+                Saltar video
+              </button>
+            </div>
+
+            {!hasStartedVideo ? (
+              <p className={styles.videoHint}>Pulsa “Reproducir” para iniciar con audio.</p>
+            ) : !videoEnded ? (
+              <p className={styles.videoHint}>Reproduciendo… al finalizar se habilitará “Siguiente”.</p>
+            ) : (
+              <p className={styles.videoHintDone}>Video finalizado. Puedes continuar.</p>
+            )}
           </div>
         ) : phase === "dialog" ? (
           <div className={styles.dialogFlow}>
             <CharacterStepDialog
               steps={modelSteps}
-              onComplete={handleDialogComplete}
+              onComplete={() => handleDialogComplete()}
               size="compact"
               className={styles.dialog}
             />
@@ -149,28 +240,28 @@ export default function ModeloClient() {
               <Scene3D />
             </div>
 
-            <p className={styles.hint}>
-              Arrastra para rotar | Scroll para hacer zoom 
-            </p>
+            <p className={styles.hint}>Arrastra para rotar | Scroll para hacer zoom</p>
 
-            <div className={styles.dialogArea}>
+            <div
+              className={`${styles.dialogArea} ${isPostDialogComplete ? styles.dialogAreaWithAction : ""}`}
+            >
               <CharacterStepDialog
                 steps={postModelSteps}
-                onComplete={handlePostDialogComplete}
+                onComplete={() => handlePostDialogComplete()}
                 size="compact"
                 className={styles.dialog}
               />
-            </div>
 
-            {isPostDialogComplete ? (
-              <button
-                type="button"
-                className={styles.continueBtn}
-                onClick={goToEmbebido1}
-              >
-                Continuar
-              </button>
-            ) : null}
+              {isPostDialogComplete ? (
+                <button
+                  type="button"
+                  className={styles.continueBtn}
+                  onClick={goToEmbebido1}
+                >
+                  Continuar
+                </button>
+              ) : null}
+            </div>
           </div>
         )}
       </main>

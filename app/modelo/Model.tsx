@@ -19,10 +19,18 @@ export default function Model({ url }: ModelProps) {
       const materials = Array.isArray(node.material)
         ? node.material
         : [node.material];
+      const localMaterials = materials.map((mat: any) => mat.clone());
 
-      materials.forEach((mat: any) => {
-        mat.toneMapped = false;
-        if (typeof mat.envMapIntensity === "number") mat.envMapIntensity = 0;
+      node.material = Array.isArray(node.material)
+        ? localMaterials
+        : localMaterials[0];
+
+      localMaterials.forEach((localMat: any) => {
+        // Keep colors as authored in the model.
+        localMat.toneMapped = false;
+        if (typeof localMat.envMapIntensity === "number") {
+          localMat.envMapIntensity = 0;
+        }
       });
     });
 

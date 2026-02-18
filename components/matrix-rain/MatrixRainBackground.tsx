@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import styles from "./MatrixRainBackground.module.css";
 
-type MatrixRainBackgroundProps = {
+export type MatrixRainBackgroundProps = {
   className?: string;
   charSize?: number;
   baseSpeed?: number;
@@ -11,6 +11,7 @@ type MatrixRainBackgroundProps = {
 };
 
 const CHARSET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$#@%&*+-/\\<>[]{}";
+const COLUMN_DENSITY = 1.28;
 
 function randomChar() {
   const index = Math.floor(Math.random() * CHARSET.length);
@@ -20,7 +21,7 @@ function randomChar() {
 export default function MatrixRainBackground({
   className,
   charSize = 20,
-  baseSpeed = 0.4,
+  baseSpeed = 0.5,
   glowRadius = 600,
 }: MatrixRainBackgroundProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -46,6 +47,7 @@ export default function MatrixRainBackground({
     let height = 0;
     let dpr = 1;
     let columns = 0;
+    let columnSpacing = charSize;
     let drops: number[] = [];
     let speeds: number[] = [];
     let phases: number[] = [];
@@ -55,7 +57,8 @@ export default function MatrixRainBackground({
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     function resetColumns() {
-      columns = Math.max(1, Math.floor(width / charSize) + 1);
+      columnSpacing = Math.max(8, charSize / COLUMN_DENSITY);
+      columns = Math.max(1, Math.floor(width / columnSpacing) + 1);
       drops = Array.from(
         { length: columns },
         () => Math.random() * height - height * Math.random()
@@ -97,7 +100,7 @@ export default function MatrixRainBackground({
     }
 
     function drawFrame(time: number) {
-      context.fillStyle = "rgba(8, 16, 28, 0.34)";
+      context.fillStyle = "rgba(4, 11, 24, 0.73)";
       context.fillRect(0, 0, width, height);
 
       context.font = `${charSize}px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace`;
@@ -105,7 +108,7 @@ export default function MatrixRainBackground({
       context.shadowBlur = 0;
 
       for (let i = 0; i < columns; i += 1) {
-        const baseX = i * charSize;
+        const baseX = i * columnSpacing;
         const y = drops[i];
         const char = randomChar();
 
@@ -120,14 +123,14 @@ export default function MatrixRainBackground({
           pointer.active ? (pointer.x - baseX) * influence * 0.08 : 0;
         const x = baseX + driftWave + mousePull;
 
-        const alpha = 0.34 + influence * 0.6;
-        const red = Math.round(90 + influence * 70);
-        const green = Math.round(188 + influence * 50);
-        const blue = Math.round(235 + influence * 20);
+        const alpha = 0.58 + influence * 0.4;
+        const red = Math.round(120 + influence * 55);
+        const green = Math.round(215 + influence * 35);
+        const blue = Math.round(248 + influence * 7);
 
         context.fillStyle = `rgba(${red}, ${green}, ${blue}, ${alpha})`;
-        context.shadowBlur = influence * 20;
-        context.shadowColor = `rgba(145, 225, 255, ${influence * 0.85})`;
+        context.shadowBlur = 5 + influence * 26;
+        context.shadowColor = `rgba(165, 235, 255, ${0.48 + influence * 0.45})`;
         context.fillText(char, x, y);
 
         const fallSpeed =
@@ -143,7 +146,7 @@ export default function MatrixRainBackground({
     }
 
     resize();
-    context.fillStyle = "rgb(4, 10, 20)";
+    context.fillStyle = "rgb(1, 4, 10)";
     context.fillRect(0, 0, width, height);
     rafId = window.requestAnimationFrame(drawFrame);
 

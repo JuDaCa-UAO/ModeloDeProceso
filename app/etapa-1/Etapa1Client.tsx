@@ -14,18 +14,18 @@ export default function Etapa1Client() {
   const steps = useMemo<CharacterDialogStep[]>(
     () => [
       {
-        text: "Hola, soy Laia. Bienvenido a la etapa 1. Aqui vamos a empezar con una vision general.",
+        text: "Antes de ver herramientas, necesito entender tu punto de partida.",
         imgSrc: "/ui/laia_explaining.png",
         imgAlt: "Laia - paso 1",
       },
       {
-        text: "En esta etapa vas a entender como se estructura el proceso y que vas a lograr al final.",
+        text: "Este autodiagnóstico no te evalúa: me ayuda a conocer tu contexto, qué quieres mejorar y qué condiciones tienes.",
         imgSrc: "/ui/Laia_explaining_holo.png",
         imgAlt: "Laia - paso 2",
       },
       {
-        text: "Cuando estes listo, pasaremos al contenido embebido para continuar la experiencia.",
-        imgSrc: "/ui/Laia_triumphant.png",
+        text: "Responde con sinceridad. Así el recorrido será útil y aplicable.",
+        imgSrc: "/ui/Laia.png",
         imgAlt: "Laia - paso 3",
       },
     ],
