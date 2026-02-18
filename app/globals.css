@@ -9,7 +9,11 @@ body {
   height: 100%;
 }
 
+:root {
+  --font-tech: "Chakra Petch";
+}
+
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-family: var(--font-tech), "Segoe UI", Tahoma, sans-serif;
 }

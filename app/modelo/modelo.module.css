@@ -1,16 +1,29 @@
 .stage {
   min-height: 100dvh;
-  background: radial-gradient(1200px 600px at 50% 30%, rgba(120,255,240,0.10), transparent 60%),
-              linear-gradient(180deg, #070812, #050513);
+  overflow: hidden;
   color: rgba(255, 255, 255, 0.92);
   display: flex;
   flex-direction: column;
+  position: relative;
+  isolation: isolate;
+}
+
+/* Matrix background */
+.matrixBackground {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
 }
 
 .topBar {
+  position: relative;
+  z-index: 2;
+  flex: 0 0 auto;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   padding: 18px 22px;
   border-bottom: 1px solid rgba(255,255,255,0.08);
   background: rgba(0,0,0,0.25);
@@ -32,17 +45,143 @@
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
+/* Main ocupa el resto del viewport */
 .center {
-  flex: 1;
+  position: relative;
+  z-index: 2;
+  flex: 1 1 auto;
+
   display: grid;
   place-items: center;
-  padding: 28px 20px;
-  gap: 14px;
+
+  padding: 16px 18px;
+  overflow: hidden;
+}
+
+/* ===================== */
+/* VIDEO FULL SECTION    */
+/* ===================== */
+
+.videoFull {
+  width: min(1200px, 100%);
+  height: 100%;
+  display: grid;
+  grid-template-rows: 1fr auto auto;
+  gap: 10px;
+  overflow: hidden;
+}
+
+.videoFullMedia {
+  width: 100%;
+  height: 100%;
+  display: block;
+
+  border-radius: 24px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(0,0,0,0.35);
+  box-shadow: 0 30px 120px rgba(0,0,0,0.55);
+
+  object-fit: contain;
+}
+
+.videoActions {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+
+.skipBtn,
+.nextBtn {
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.86);
+  border-radius: 14px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  letter-spacing: 0.10em;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.skipBtn:hover,
+.nextBtn:hover {
+  transform: translateY(-1px);
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.20);
+}
+
+.nextBtn {
+  border-color: rgba(120, 255, 240, 0.35);
+  background: linear-gradient(90deg, rgba(34, 211, 238, 0.12), rgba(99, 102, 241, 0.12));
+  color: rgba(207, 250, 254, 0.95);
+}
+
+.nextBtn:disabled,
+.skipBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.arrow {
+  display: inline-block;
+  margin-left: 8px;
+}
+
+.videoHint,
+.videoHintDone {
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-align: center;
+}
+.videoHint { color: rgba(255,255,255,0.60); }
+.videoHintDone { color: rgba(165, 243, 252, 0.85); }
+
+/* ===================== */
+/* ✅ DIALOG: CENTRADO    */
+/* ===================== */
+
+.dialogFlow {
+  width: 100%;
+  height: 100%;
+
+  /* ✅ Esto centra el CharacterStepDialog vertical y horizontal */
+  display: grid;
+  place-items: center;
+
+  overflow: hidden;
+}
+
+.dialog {
+  width: min(1100px, 100%);
+}
+
+/* ===================== */
+/* MODEL CONTENT          */
+/* ===================== */
+
+.content {
+  width: min(1100px, 100%);
+  height: 100%;
+
+  display: grid;
+  grid-template-rows: 1fr auto auto;
+  gap: 10px;
+  justify-items: center;
+
+  overflow: hidden;
 }
 
 .viewer {
   width: min(980px, 100%);
-  height: min(70vh, 620px);
+  height: 100%;
+  max-height: 100%;
   border-radius: 24px;
   border: 1px solid rgba(255,255,255,0.10);
   background: rgba(255,255,255,0.03);
@@ -55,4 +194,42 @@
   font-size: 12px;
   color: rgba(255,255,255,0.60);
   letter-spacing: 0.06em;
+  text-align: center;
+}
+
+.dialogArea {
+  width: min(980px, 100%);
+}
+
+.dialogAreaWithAction {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 12px;
+}
+
+.continueBtn {
+  border: 1px solid rgba(120, 255, 240, 0.35);
+  background: linear-gradient(90deg, rgba(34, 211, 238, 0.12), rgba(99, 102, 241, 0.12));
+  color: rgba(207, 250, 254, 0.95);
+  border-radius: 16px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  letter-spacing: 0.12em;
+  font-size: 13px;
+}
+
+.continueBtn:hover {
+  transform: translateY(-1px);
+  border-color: rgba(120, 255, 240, 0.55);
+  box-shadow: 0 22px 80px rgba(0,0,0,0.55);
+}
+
+@media (max-width: 900px) {
+  .dialogAreaWithAction {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
 }

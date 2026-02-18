@@ -1,0 +1,136 @@
+.stage {
+  position: relative;
+  min-height: 100dvh;
+  color: rgba(255, 255, 255, 0.92);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.matrixBackground {
+  z-index: 0;
+}
+
+.main {
+  position: relative;
+  z-index: 1;
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 28px 24px;
+}
+
+.miniViewerDock {
+  position: fixed;
+  right: 18px;
+  top: 16px;
+  z-index: 2;
+  width: 300px;
+  height: 220px;
+  border-radius: 18px;
+  border: 1px solid rgba(170, 245, 255, 0.34);
+  background: rgba(2, 8, 18, 0.58);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.titlePanel {
+  width: min(980px, 100%);
+  display: grid;
+  place-items: center;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(34px, 5vw, 58px);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(200, 245, 255, 0.98);
+  text-shadow: 0 0 28px rgba(170, 245, 255, 0.34);
+}
+
+.dialogPanel {
+  width: min(980px, 100%);
+}
+
+.formSpacePanel {
+  width: min(980px, 100%);
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+}
+
+.formSpaceBox {
+  height: clamp(250px, 44dvh, 430px);
+  border-radius: 24px;
+  border: 1px dashed rgba(190, 245, 255, 0.42);
+  background: rgba(255, 255, 255, 0.04);
+  display: grid;
+  place-items: center;
+  font-size: clamp(20px, 2.2vw, 32px);
+  color: rgba(218, 250, 255, 0.94);
+  letter-spacing: 0.08em;
+}
+
+.videoPanel {
+  width: min(var(--video-panel-max-width, 860px), 100%);
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+}
+
+.video {
+  width: 100%;
+  max-height: min(var(--video-max-height-vh, 58dvh), var(--video-max-height-px, 420px));
+  border-radius: 20px;
+  border: 1px solid rgba(170, 245, 255, 0.28);
+  background: rgba(0, 0, 0, 0.42);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+}
+
+.videoActionBtn {
+  justify-self: center;
+  width: min(320px, 100%);
+  border-radius: 14px;
+  border: 1px solid rgba(120, 255, 240, 0.4);
+  padding: 10px 14px;
+  background: linear-gradient(
+    90deg,
+    rgba(74, 222, 255, 0.2),
+    rgba(56, 139, 253, 0.2)
+  );
+  color: rgba(222, 247, 255, 0.96);
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+  font-family: var(--font-tech), "Segoe UI", Tahoma, sans-serif;
+  letter-spacing: 0.12em;
+  font-size: 12px;
+}
+
+.videoActionBtn:hover {
+  transform: translateY(-1px);
+  border-color: rgba(120, 255, 240, 0.55);
+  box-shadow: 0 14px 42px rgba(0, 0, 0, 0.45);
+}
+
+@media (max-width: 980px) {
+  .main {
+    padding-right: 24px;
+    padding-top: 170px;
+  }
+
+  .miniViewerDock {
+    width: 220px;
+    height: 160px;
+    right: 12px;
+    top: 10px;
+  }
+
+  .videoActionBtn {
+    padding: 9px 12px;
+    font-size: 11px;
+  }
+}

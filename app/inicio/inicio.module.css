@@ -129,7 +129,7 @@
 
 .title {
   margin: 0;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-family: var(--font-tech), "Segoe UI", Tahoma, sans-serif;
   font-size: clamp(28px, 4vw, 54px);
   letter-spacing: 0.25em;
   color: rgba(165, 243, 252, 0.95);
@@ -211,7 +211,7 @@
 .btnText {
   position: relative;
   z-index: 2;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-family: var(--font-tech), "Segoe UI", Tahoma, sans-serif;
   font-size: 14px;
   letter-spacing: 0.22em;
 }
@@ -280,7 +280,7 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-  font-size: 12px;
+  font-size: 16px;
   color: rgba(255, 255, 255, 0.55);
 }
 
