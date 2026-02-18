@@ -1,13 +1,13 @@
 .shell {
   width: min(1100px, 100%);
   display: grid;
-  grid-template-columns: 360px 1fr;
+  grid-template-columns: minmax(210px, 360px) minmax(0, 1fr);
   gap: 22px;
   align-items: center;
 }
 
 .compact {
-  grid-template-columns: 230px 1fr;
+  grid-template-columns: minmax(170px, 230px) minmax(0, 1fr);
   gap: 16px;
 }
 
@@ -15,11 +15,13 @@
   display: grid;
   gap: 10px;
   justify-items: center;
+  width: 100%;
 }
 
 .avatarFrame {
   position: relative;
-  width: 320px;
+  width: 100%;
+  max-width: 320px;
   aspect-ratio: 1 / 1;
   border-radius: 24px;
   overflow: hidden;
@@ -33,7 +35,7 @@
 }
 
 .compact .avatarFrame {
-  width: 210px;
+  max-width: 210px;
   border-radius: 18px;
 }
 
@@ -72,25 +74,25 @@
   backdrop-filter: blur(14px);
   box-shadow: 0 30px 120px rgba(0, 0, 0, 0.55);
   padding: 18px 18px 14px;
-  min-height: 240px;
+  min-height: clamp(190px, 30dvh, 240px);
   display: grid;
   gap: 14px;
 }
 
 .compact .dialogBox {
-  min-height: 190px;
+  min-height: clamp(160px, 24dvh, 190px);
   border-radius: 18px;
   padding: 14px 14px 12px;
 }
 
 .dialogText {
-  font-size: 18px;
+  font-size: clamp(16px, 2vw, 18px);
   line-height: 1.65;
   color: rgba(255, 255, 255, 0.88);
 }
 
 .compact .dialogText {
-  font-size: 15px;
+  font-size: clamp(14px, 1.7vw, 15px);
   line-height: 1.5;
 }
 
@@ -120,6 +122,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: 14px;
 }
 
@@ -141,6 +144,7 @@
   font-family: var(--font-tech), "Segoe UI", Tahoma, sans-serif;
   letter-spacing: 0.12em;
   font-size: 13px;
+  white-space: nowrap;
 }
 
 .compact .nextBtn {
@@ -165,6 +169,7 @@
   color: rgba(255, 255, 255, 0.6);
   letter-spacing: 0.08em;
   font-family: var(--font-tech), "Segoe UI", Tahoma, sans-serif;
+  white-space: nowrap;
 }
 
 .compact .counter {
@@ -185,7 +190,7 @@
   }
 
   .compact .avatarFrame {
-    width: min(170px, 52vw);
+    max-width: min(170px, 52vw);
   }
 
   .compact .dialogBox {
@@ -195,5 +200,37 @@
 
   .compact .dialogText {
     font-size: 14px;
+  }
+}
+
+@media (max-width: 560px) {
+  .dialogBox {
+    border-radius: 16px;
+    padding: 12px 12px 10px;
+    min-height: 140px;
+  }
+
+  .actions {
+    gap: 10px;
+  }
+
+  .counter {
+    width: 100%;
+    text-align: center;
+    white-space: normal;
+  }
+
+  .nextBtn {
+    width: 100%;
+  }
+}
+
+@media (max-height: 740px) {
+  .avatarFrame {
+    max-width: 240px;
+  }
+
+  .compact .avatarFrame {
+    max-width: 160px;
   }
 }

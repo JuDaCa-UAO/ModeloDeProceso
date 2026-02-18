@@ -21,6 +21,7 @@ type CharacterStepDialogProps = {
 
 const DEFAULT_CHARACTER_NAME = "Laia";
 const DEFAULT_NEXT_LABEL = "Siguiente";
+const DEFAULT_CHARACTER_IMAGE = "/ui/laia.png";
 const TYPEWRITER_MS = 22;
 
 export default function CharacterStepDialog({
@@ -48,8 +49,13 @@ export default function CharacterStepDialog({
 
   const isLast = idx >= safeSteps.length - 1;
   const step = safeSteps[idx];
+  const [resolvedImgSrc, setResolvedImgSrc] = useState(step.imgSrc);
   const isTyping = typedChars < step.text.length;
   const displayedText = step.text.slice(0, typedChars);
+
+  useEffect(() => {
+    setResolvedImgSrc(step.imgSrc);
+  }, [step.imgSrc]);
 
   useEffect(() => {
     setTypedChars(0);
@@ -85,6 +91,12 @@ export default function CharacterStepDialog({
     }
   }
 
+  function handleAvatarError() {
+    if (resolvedImgSrc !== DEFAULT_CHARACTER_IMAGE) {
+      setResolvedImgSrc(DEFAULT_CHARACTER_IMAGE);
+    }
+  }
+
   return (
     <div
       className={`${styles.shell} ${
@@ -94,11 +106,13 @@ export default function CharacterStepDialog({
       <div className={styles.left}>
         <div className={styles.avatarFrame}>
           <Image
-            src={step.imgSrc}
+            src={resolvedImgSrc}
             alt={step.imgAlt || characterName}
             fill
             className={styles.avatarImg}
             priority
+            unoptimized
+            onError={handleAvatarError}
           />
         </div>
         <div className={styles.avatarTag}>{characterName}</div>

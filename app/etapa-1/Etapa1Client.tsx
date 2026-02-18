@@ -25,7 +25,7 @@ export default function Etapa1Client() {
       },
       {
         text: "Responde con sinceridad. Así el recorrido será útil y aplicable.",
-        imgSrc: "/ui/Laia.png",
+        imgSrc: "/ui/laia.png",
         imgAlt: "Laia - paso 3",
       },
     ],
@@ -47,3 +47,4 @@ export default function Etapa1Client() {
     </div>
   );
 }
+

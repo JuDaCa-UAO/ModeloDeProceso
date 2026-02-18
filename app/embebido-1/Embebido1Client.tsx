@@ -55,7 +55,7 @@ export default function Embebido1Client() {
       },
       {
         text: "Responde con sinceridad. Así el recorrido será útil y aplicable.",
-        imgSrc: "/ui/Laia.png",
+        imgSrc: "/ui/laia.png",
         imgAlt: "Laia - paso 3",
       },
     ],
@@ -66,12 +66,12 @@ export default function Embebido1Client() {
     () => [
       {
         text: "Listo. Ya tenemos tu punto de partida.",
-        imgSrc: "/ui/Laia_explaining.png",
+        imgSrc: "/ui/laia_explaining.png",
         imgAlt: "Laia - embebido paso post formulario 1",
       },
       {
         text: "Con esto, lo que viene no será genérico: estará alineado a tu realidad.",
-        imgSrc: "/ui/Laia.png",
+        imgSrc: "/ui/laia.png",
         imgAlt: "Laia - embebido paso post formulario 1",
       },
       {
@@ -212,3 +212,4 @@ export default function Embebido1Client() {
     </div>
   );
 }
+

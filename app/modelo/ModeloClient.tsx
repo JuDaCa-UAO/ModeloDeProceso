@@ -36,12 +36,12 @@ export default function ModeloClient() {
       },
       {
         text: "Este modelo de proceso guía la apropiación pedagógica de la IA generativa en la docencia a través de seis etapas conectadas en forma de espiral.",
-        imgSrc: "/ui/Laia_explaining.png",
+        imgSrc: "/ui/laia_explaining.png",
         imgAlt: "Laia - modelo paso 2",
       },
       {
         text: "La espiral representa un recorrido progresivo e iterativo: se avanza etapa por etapa, se implementa en el aula, se evalúa lo que ocurrió y se mejora con base en evidencia.",
-        imgSrc: "/ui/Laia_explaining.png",
+        imgSrc: "/ui/laia_explaining.png",
         imgAlt: "Laia - modelo paso 3",
       },
       {
@@ -57,12 +57,12 @@ export default function ModeloClient() {
     () => [
       {
         text: "Esta es la espiral que iremos recorriendo juntos.",
-        imgSrc: "/ui/Laia_explaining.png",
+        imgSrc: "/ui/laia_explaining.png",
         imgAlt: "Laia - modelo desbloqueado paso 1",
       },
       {
         text: "En este punto seguro te preguntas ¿por qué una espiral?",
-        imgSrc: "/ui/Laia_explaining.png",
+        imgSrc: "/ui/laia_explaining.png",
         imgAlt: "Laia - modelo desbloqueado paso 2",
       },
       {
@@ -72,7 +72,7 @@ export default function ModeloClient() {
       },
       {
         text: "1. Se parte del contexto real y una necesidad concreta. ", 
-        imgSrc: "/ui/Laia_explaining.png",
+        imgSrc: "/ui/laia_explaining.png",
         imgAlt: "Laia - modelo desbloqueado paso 2",
       },
       {
@@ -87,7 +87,7 @@ export default function ModeloClient() {
       },
       {
         text: "4. Se evalúa el impacto y se ajusta. ", 
-        imgSrc: "/ui/Laia_explaining.png",
+        imgSrc: "/ui/laia_explaining.png",
         imgAlt: "Laia - modelo desbloqueado paso 2",
       },
       {
@@ -268,3 +268,4 @@ export default function ModeloClient() {
     </div>
   );
 }
+
