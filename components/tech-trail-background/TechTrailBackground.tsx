@@ -41,11 +41,14 @@ export default function TechTrailBackground({
   const safeImageOpacity = Math.min(1, Math.max(0, backgroundImageOpacity));
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+    const canvasMaybe = canvasRef.current;
+    if (!canvasMaybe) return;
 
-    const context = canvas.getContext("2d");
-    if (!context) return;
+    const contextMaybe = canvasMaybe.getContext("2d");
+    if (!contextMaybe) return;
+
+    const canvas: HTMLCanvasElement = canvasMaybe;
+    const context: CanvasRenderingContext2D = contextMaybe;
 
     const pointer = {
       x: 0,
