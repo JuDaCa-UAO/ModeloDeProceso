@@ -1,29 +1,16 @@
 import Image from "next/image";
+import TechTrailBackground from "@/components/tech-trail-background/TechTrailBackground";
 import styles from "./inicio.module.css";
 import ActionButtons from "./ActionButtons";
 
 export default function InicioPage() {
   return (
     <div className={styles.stage}>
-      {/* Fondo */}
-      <div className={styles.bg} aria-hidden="true">
-        <div className={styles.bgImageWrap}>
-          <Image
-            src="/ui/bg-home.png"
-            alt="Fondo"
-            fill
-            priority
-            unoptimized
-            className={styles.bgImage}
-          />
-        </div>
-
-        <div className={styles.bgGradient} />
-        <div className={styles.glowCyan} />
-        <div className={styles.glowFuchsia} />
-        <div className={styles.grid} />
-        <div className={styles.scanlines} />
-      </div>
+      <TechTrailBackground
+        className={styles.techBackground}
+        backgroundImageSrc="/ui/bg-home.png"
+        backgroundImageOpacity={1}
+      />
 
       <main className={styles.main}>
         <section className={styles.card}>

@@ -6,8 +6,7 @@ import { useRouter } from "next/navigation";
 import CharacterStepDialog, {
   CharacterDialogStep,
 } from "@/components/character-step-dialog/CharacterStepDialog";
-import MatrixRainBackground from "@/components/matrix-rain/MatrixRainBackground";
-import { SHARED_MATRIX_RAIN_PRESET } from "@/components/matrix-rain/matrixRainPresets";
+import TechTrailBackground from "@/components/tech-trail-background/TechTrailBackground";
 import styles from "./modelo.module.css";
 import Scene3D from "./scene3d";
 import { writeProgress } from "../../lib/progress";
@@ -21,33 +20,56 @@ export default function ModeloClient() {
 
   const [phase, setPhase] = useState<ModeloPhase>("video");
 
-  // ✅ Nuevo: control de reproducción manual
   const [hasStartedVideo, setHasStartedVideo] = useState(false);
 
-  // ✅ "Siguiente" solo al terminar (o al saltar)
   const [videoEnded, setVideoEnded] = useState(false);
 
   const modelSteps = useMemo<CharacterDialogStep[]>(
     () => [
       {
-        text: "Bienvenido, este es el modelo de proceso que seguiremos juntos para aumentar tus conocimientos sobre inteligencia artificial generativa.",
+        text: "Bienvenido. Este es el modelo de proceso que seguiremos juntos para fortalecer tus conocimientos sobre inteligencia artificial generativa.",
         imgSrc: "/ui/laia.png",
         imgAlt: "Laia - modelo paso 1",
       },
       {
-        text: "Este modelo de proceso guía la apropiación pedagógica de la IA generativa en la docencia a través de seis etapas conectadas en forma de espiral.",
+        text: "Este modelo guía la apropiación pedagógica de la IA generativa en la docencia, a través de seis etapas conectadas en forma de espiral.",
         imgSrc: "/ui/laia_explaining.png",
         imgAlt: "Laia - modelo paso 2",
       },
-      {
-        text: "La espiral representa un recorrido progresivo e iterativo: se avanza etapa por etapa, se implementa en el aula, se evalúa lo que ocurrió y se mejora con base en evidencia.",
+            {
+        text: "Seguro te preguntas: ¿por qué una espiral?",
         imgSrc: "/ui/laia_explaining.png",
-        imgAlt: "Laia - modelo paso 3",
+        imgAlt: "Laia - modelo desbloqueado paso 2",
       },
       {
-        text: "Así, cada nueva vuelta a la espiral permite refinar decisiones, materiales y estrategias.",
+        text: "Una espiral no representa una lista de pasos aislados; representa un ciclo de mejora:",
+        imgSrc: "/ui/Laia.png",
+        imgAlt: "Laia - modelo desbloqueado paso 2",
+      },
+      {
+        text: "1. Se parte del contexto real y de una necesidad concreta.",
+        imgSrc: "/ui/laia_explaining.png",
+        imgAlt: "Laia - modelo desbloqueado paso 2",
+      },
+      {
+        text: "2. Se diseñan decisiones pedagógicas con propósito.",
+        imgSrc: "/ui/Laia.png",
+        imgAlt: "Laia - modelo desbloqueado paso 2",
+      },
+      {
+        text: "3. Se implementa con acompañamiento y cuidado.",
         imgSrc: "/ui/Laia_explaining_holo.png",
-        imgAlt: "Laia - modelo paso 4",
+        imgAlt: "Laia - modelo desbloqueado paso 2",
+      },
+      {
+        text: "4. Se evalúa el impacto y se ajusta.",
+        imgSrc: "/ui/laia_explaining.png",
+        imgAlt: "Laia - modelo desbloqueado paso 2",
+      },
+      {
+        text: "El valor del modelo está en que te permite avanzar con estructura, evitando la improvisación y fortaleciendo tu práctica docente con cada iteración.",
+        imgSrc: "/ui/Laia_triumphant.png",
+        imgAlt: "Laia - modelo desbloqueado paso 2",
       },
     ],
     []
@@ -56,55 +78,38 @@ export default function ModeloClient() {
   const postModelSteps = useMemo<CharacterDialogStep[]>(
     () => [
       {
-        text: "Esta es la espiral que iremos recorriendo juntos.",
+        text: "Esta es la espiral que recorreremos juntos.",
         imgSrc: "/ui/laia_explaining.png",
         imgAlt: "Laia - modelo desbloqueado paso 1",
       },
       {
-        text: "En este punto seguro te preguntas ¿por qué una espiral?",
+        text: "Conforme avances, podrás ver tu progreso reflejado arriba a la derecha, pues la espiral siempre te acompañará.",
+        imgSrc: "/ui/laia.png",
+        imgAlt: "Laia - modelo desbloqueado paso 1",
+      },
+      {
+        text: "Por cierto, es posible que esta no sea tu primera iteración. No te preocupes: podrás avanzar al punto que desees (Falta implementar interactividad con Espiral).",
         imgSrc: "/ui/laia_explaining.png",
-        imgAlt: "Laia - modelo desbloqueado paso 2",
+        imgAlt: "Laia - modelo desbloqueado paso 1",
       },
       {
-        text: "Una espiral no representa una lista de pasos aislados. Representa un ciclo de mejora:", 
-        imgSrc: "/ui/Laia_explaining_holo.png",
-        imgAlt: "Laia - modelo desbloqueado paso 2",
+        text: "Bien, ahora que conoces un poco del modelo, ¿qué tal si vamos directamente a la etapa 1?",
+        imgSrc: "/ui/laia_explaining_holo.png",
+        imgAlt: "Laia - modelo desbloqueado paso 1",
       },
       {
-        text: "1. Se parte del contexto real y una necesidad concreta. ", 
-        imgSrc: "/ui/laia_explaining.png",
-        imgAlt: "Laia - modelo desbloqueado paso 2",
+        text: "Comencemos este emocionante recorrido. ¿Qué te parece?",
+        imgSrc: "/ui/laia_triumphant.png",
+        imgAlt: "Laia - modelo desbloqueado paso 1",
       },
-      {
-        text: "2. Se diseñan decisiones pedagógicas con propósito. ", 
-        imgSrc: "/ui/Laia_explaining_holo.png",
-        imgAlt: "Laia - modelo desbloqueado paso 2",
-      },
-      {
-        text: "3. Se implementa con acompañamiento y cuidado. ", 
-        imgSrc: "/ui/Laia_explaining_holo.png",
-        imgAlt: "Laia - modelo desbloqueado paso 2",
-      },
-      {
-        text: "4. Se evalúa el impacto y se ajusta. ", 
-        imgSrc: "/ui/laia_explaining.png",
-        imgAlt: "Laia - modelo desbloqueado paso 2",
-      },
-      {
-        text: "El valor del modelo está en que permite avanzar con estructura, evitando improvisación, y fortaleciendo la práctica docente con cada iteración.", 
-        imgSrc: "/ui/Laia_triumphant.png",
-        imgAlt: "Laia - modelo desbloqueado paso 2",
-      },
+
     ],
     []
   );
 
-  const [isPostDialogComplete, setIsPostDialogComplete] = useState(false);
-
   useEffect(() => {
     writeProgress({ hasStarted: true, lastRoute: "/modelo" });
 
-    // ✅ Asegura que arranque pausado y con audio disponible
     if (videoRef.current) {
       videoRef.current.pause();
       videoRef.current.currentTime = 0;
@@ -118,29 +123,17 @@ export default function ModeloClient() {
     if (!v) return;
 
     try {
-      // ✅ reproducción tras interacción: audio permitido
       v.muted = false;
       v.volume = 1;
+      setVideoEnded(false);
       setHasStartedVideo(true);
       await v.play();
-    } catch {
-      // Si fallara, normalmente es por políticas extrañas o codec.
-      // Pero al ser interacción directa, debería funcionar.
-    }
+    } catch {}
   }
 
   function handleVideoEnded() {
+    setHasStartedVideo(false);
     setVideoEnded(true);
-  }
-
-  function skipVideo() {
-    const v = videoRef.current;
-    if (v) {
-      v.pause();
-      v.currentTime = 0;
-    }
-    setVideoEnded(true);
-    setHasStartedVideo(true);
   }
 
   function goNextFromVideo() {
@@ -148,12 +141,11 @@ export default function ModeloClient() {
   }
 
   function handleDialogComplete() {
-    setIsPostDialogComplete(false);
     setPhase("model");
   }
 
   function handlePostDialogComplete() {
-    setIsPostDialogComplete(true);
+    goToEmbebido1();
   }
 
   function goToEmbebido1() {
@@ -163,10 +155,7 @@ export default function ModeloClient() {
 
   return (
     <div className={styles.stage}>
-      <MatrixRainBackground
-        className={styles.matrixBackground}
-        {...SHARED_MATRIX_RAIN_PRESET}
-      />
+      <TechTrailBackground className={styles.techBackground} />
 
       <header className={styles.topBar}>
         <Link className={styles.back} href="/">
@@ -183,44 +172,33 @@ export default function ModeloClient() {
               className={styles.videoFullMedia}
               src={VIDEO_URL}
               playsInline
-              controls={false}   // ✅ sin controles
+              controls={false}
               preload="auto"
               onEnded={handleVideoEnded}
             />
 
             <div className={styles.videoActions}>
-              {/* ✅ Botón principal: Reproducir */}
-              {!hasStartedVideo ? (
+              {!hasStartedVideo && !videoEnded ? (
                 <button type="button" className={styles.nextBtn} onClick={playVideo}>
                   Reproducir <span className={styles.arrow}>▶</span>
                 </button>
-              ) : (
+              ) : null}
+
+              {videoEnded ? (
                 <button
                   type="button"
                   className={styles.nextBtn}
                   onClick={goNextFromVideo}
-                  disabled={!videoEnded}
-                  aria-disabled={!videoEnded}
                 >
-                  Siguiente <span className={styles.arrow}>→</span>
+                  Continuar <span className={styles.arrow}>→</span>
                 </button>
-              )}
-
-              {/* Opcional: Saltar */}
-              <button
-                type="button"
-                className={styles.skipBtn}
-                onClick={skipVideo}
-                disabled={videoEnded}
-              >
-                Saltar video
-              </button>
+              ) : null}
             </div>
 
-            {!hasStartedVideo ? (
-              <p className={styles.videoHint}>Pulsa “Reproducir” para iniciar con audio.</p>
+            {!hasStartedVideo && !videoEnded ? (
+              <p className={styles.videoHint}>Pulsa &quot;Reproducir&quot; para iniciar con audio.</p>
             ) : !videoEnded ? (
-              <p className={styles.videoHint}>Reproduciendo… al finalizar se habilitará “Siguiente”.</p>
+              <p className={styles.videoHint}>Reproduciendo... al finalizar se habilitara &quot;Continuar&quot;.</p>
             ) : (
               <p className={styles.videoHintDone}>Video finalizado. Puedes continuar.</p>
             )}
@@ -242,25 +220,14 @@ export default function ModeloClient() {
 
             <p className={styles.hint}>Arrastra para rotar | Scroll para hacer zoom</p>
 
-            <div
-              className={`${styles.dialogArea} ${isPostDialogComplete ? styles.dialogAreaWithAction : ""}`}
-            >
+            <div className={styles.dialogArea}>
               <CharacterStepDialog
                 steps={postModelSteps}
                 onComplete={() => handlePostDialogComplete()}
                 size="compact"
+                density="tight"
                 className={styles.dialog}
               />
-
-              {isPostDialogComplete ? (
-                <button
-                  type="button"
-                  className={styles.continueBtn}
-                  onClick={goToEmbebido1}
-                >
-                  Continuar
-                </button>
-              ) : null}
             </div>
           </div>
         )}
@@ -268,4 +235,3 @@ export default function ModeloClient() {
     </div>
   );
 }
-

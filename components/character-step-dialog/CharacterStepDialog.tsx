@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import styles from "./CharacterStepDialog.module.css";
 
@@ -16,6 +16,7 @@ type CharacterStepDialogProps = {
   className?: string;
   nextLabel?: string;
   size?: "default" | "compact";
+  density?: "standard" | "tight";
   onComplete?: (isComplete: true) => void;
 };
 
@@ -30,6 +31,7 @@ export default function CharacterStepDialog({
   className,
   nextLabel = DEFAULT_NEXT_LABEL,
   size = "default",
+  density = "standard",
   onComplete,
 }: CharacterStepDialogProps) {
   const safeSteps = useMemo(
@@ -38,31 +40,25 @@ export default function CharacterStepDialog({
   );
   const [idx, setIdx] = useState(0);
   const [typedChars, setTypedChars] = useState(0);
+  const [erroredStepKey, setErroredStepKey] = useState<string | null>(null);
   const completionSent = useRef(false);
 
   useEffect(() => {
-    setIdx(0);
     completionSent.current = false;
   }, [safeSteps]);
 
-  if (!safeSteps.length) return null;
-
+  const step = safeSteps[idx] ?? safeSteps[0];
   const isLast = idx >= safeSteps.length - 1;
-  const step = safeSteps[idx];
-  const [resolvedImgSrc, setResolvedImgSrc] = useState(step.imgSrc);
-  const isTyping = typedChars < step.text.length;
-  const displayedText = step.text.slice(0, typedChars);
+  const currentText = step?.text ?? "";
+  const isTyping = step ? typedChars < currentText.length : false;
+  const isDecisionStep = Boolean(step) && isLast && !isTyping;
+  const displayedText = currentText.slice(0, typedChars);
+  const stepKey = step ? `${idx}:${step.imgSrc}` : "";
+  const resolvedImgSrc =
+    step && erroredStepKey === stepKey ? DEFAULT_CHARACTER_IMAGE : step?.imgSrc ?? DEFAULT_CHARACTER_IMAGE;
 
   useEffect(() => {
-    setResolvedImgSrc(step.imgSrc);
-  }, [step.imgSrc]);
-
-  useEffect(() => {
-    setTypedChars(0);
-  }, [idx]);
-
-  useEffect(() => {
-    if (!step.text.length || !isTyping) return;
+    if (!step || !step.text.length || !isTyping) return;
 
     const timerId = window.setInterval(() => {
       setTypedChars((current) => {
@@ -72,9 +68,11 @@ export default function CharacterStepDialog({
     }, TYPEWRITER_MS);
 
     return () => window.clearInterval(timerId);
-  }, [isTyping, step.text]);
+  }, [isTyping, step, step?.text]);
 
-  function goNext() {
+  const goNext = useCallback(() => {
+    if (!step) return;
+
     if (isTyping) {
       setTypedChars(step.text.length);
       return;
@@ -82,25 +80,79 @@ export default function CharacterStepDialog({
 
     if (!isLast) {
       setIdx((current) => Math.min(current + 1, safeSteps.length - 1));
+      setTypedChars(0);
+      setErroredStepKey(null);
       return;
     }
+  }, [isLast, isTyping, safeSteps.length, step]);
 
+  const goPrevious = useCallback(() => {
+    if (!step) return;
+    if (idx <= 0) return;
+    setIdx((current) => Math.max(current - 1, 0));
+    setTypedChars(0);
+    setErroredStepKey(null);
+  }, [idx, step]);
+
+  const completeDialog = useCallback(() => {
     if (!completionSent.current) {
       completionSent.current = true;
       onComplete?.(true);
     }
-  }
+  }, [onComplete]);
+
+  const restartDialog = useCallback(() => {
+    setIdx(0);
+    setTypedChars(0);
+    setErroredStepKey(null);
+    completionSent.current = false;
+  }, []);
+
+  useEffect(() => {
+    function onKeyDown(event: KeyboardEvent) {
+      const target = event.target as HTMLElement | null;
+      const tagName = target?.tagName?.toLowerCase();
+      const isEditable =
+        Boolean(target?.isContentEditable) ||
+        tagName === "input" ||
+        tagName === "textarea" ||
+        tagName === "select";
+
+      if (isEditable) return;
+
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+        if (isDecisionStep) {
+          completeDialog();
+          return;
+        }
+        goNext();
+      }
+
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        goPrevious();
+      }
+    }
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [completeDialog, goNext, goPrevious, isDecisionStep]);
 
   function handleAvatarError() {
-    if (resolvedImgSrc !== DEFAULT_CHARACTER_IMAGE) {
-      setResolvedImgSrc(DEFAULT_CHARACTER_IMAGE);
+    if (step && step.imgSrc !== DEFAULT_CHARACTER_IMAGE) {
+      setErroredStepKey(stepKey);
     }
   }
+
+  if (!step) return null;
 
   return (
     <div
       className={`${styles.shell} ${
         size === "compact" ? styles.compact : ""
+      } ${styles.modelCenter} ${
+        density === "tight" ? styles.tight : ""
       } ${className ?? ""}`.trim()}
     >
       <div className={styles.left}>
@@ -114,8 +166,10 @@ export default function CharacterStepDialog({
             unoptimized
             onError={handleAvatarError}
           />
+          <div className={`${styles.avatarTag} ${styles.avatarTagInside}`}>
+            {characterName}
+          </div>
         </div>
-        <div className={styles.avatarTag}>{characterName}</div>
       </div>
 
       <div className={styles.right}>
@@ -126,13 +180,48 @@ export default function CharacterStepDialog({
           </div>
 
           <div className={styles.actions}>
-            <button type="button" className={styles.nextBtn} onClick={goNext}>
-              {nextLabel} <span className={styles.arrow}>-&gt;</span>
+            <button
+              type="button"
+              className={styles.navBtn}
+              onClick={goPrevious}
+              disabled={idx <= 0}
+              aria-label="Anterior"
+              title="Anterior (flecha izquierda)"
+            >
+              <span className={styles.arrow}>&larr;</span>
             </button>
 
             <div className={styles.counter}>
               {idx + 1}/{safeSteps.length}
             </div>
+
+            {isDecisionStep ? (
+              <div className={styles.endActions}>
+                <button
+                  type="button"
+                  className={styles.secondaryBtn}
+                  onClick={restartDialog}
+                >
+                  Repetir
+                </button>
+                <button
+                  type="button"
+                  className={styles.nextBtn}
+                  onClick={completeDialog}
+                >
+                  Continuar <span className={styles.arrow}>&rarr;</span>
+                </button>
+              </div>
+            ) : (
+              <button
+                type="button"
+                className={styles.nextBtn}
+                onClick={goNext}
+                title="Siguiente (flecha derecha)"
+              >
+                {nextLabel} <span className={styles.arrow}>&rarr;</span>
+              </button>
+            )}
           </div>
         </div>
       </div>
