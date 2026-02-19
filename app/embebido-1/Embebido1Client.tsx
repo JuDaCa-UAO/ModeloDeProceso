@@ -5,8 +5,7 @@ import { useRouter } from "next/navigation";
 import CharacterStepDialog, {
   CharacterDialogStep,
 } from "@/components/character-step-dialog/CharacterStepDialog";
-import MatrixRainBackground from "@/components/matrix-rain/MatrixRainBackground";
-import { SHARED_MATRIX_RAIN_PRESET } from "@/components/matrix-rain/matrixRainPresets";
+import TechTrailBackground from "@/components/tech-trail-background/TechTrailBackground";
 import MiniSpiralViewer from "@/components/mini-spiral-viewer/MiniSpiralViewer";
 import styles from "./embebido1.module.css";
 import { writeProgress } from "../../lib/progress";
@@ -127,10 +126,7 @@ export default function Embebido1Client() {
 
   return (
     <div className={styles.stage}>
-      <MatrixRainBackground
-        className={styles.matrixBackground}
-        {...SHARED_MATRIX_RAIN_PRESET}
-      />
+      <TechTrailBackground className={styles.techBackground} />
 
       <div className={styles.miniViewerDock}>
         <MiniSpiralViewer />

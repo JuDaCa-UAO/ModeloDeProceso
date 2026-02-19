@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import CharacterStepDialog, {
   CharacterDialogStep,
 } from "@/components/character-step-dialog/CharacterStepDialog";
+import TechTrailBackground from "@/components/tech-trail-background/TechTrailBackground";
 import styles from "./etapa1.module.css";
 import { writeProgress } from "../../lib/progress";
 
@@ -39,6 +40,7 @@ export default function Etapa1Client() {
 
   return (
     <div className={styles.stage}>
+      <TechTrailBackground className={styles.techBackground} />
       <CharacterStepDialog
         steps={steps}
         className={styles.dialog}
